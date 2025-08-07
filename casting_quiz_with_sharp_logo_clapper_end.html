@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>לאיזה תפקיד לוהקת בקאסט?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Assistant', sans-serif;
+      text-align: center;
+      direction: rtl;
+      background-image: url('הזמנה לחתונה צד ב.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.93);
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+    .title {
+      font-size: 32px;
+      color: #ff8981;
+      margin-bottom: 20px;
+    }
+    .start-button {
+      background-color: #febfc3;
+      border: none;
+      padding: 15px 30px;
+      font-size: 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      color: #4b0000;
+      transition: 0.3s;
+    }
+    .start-button:hover {
+      background-color: #ffdfdf;
+    }
+    .question {
+      font-size: 24px;
+      margin-bottom: 25px;
+      color: #ff8981;
+    }
+    .option {
+      background-color: #febfc3;
+      border: none;
+      padding: 12px 24px;
+      margin: 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 18px;
+      color: #4b0000;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+      min-width: 180px;
+    }
+    .option:hover {
+      background-color: #ffdfdf;
+    }
+    .result {
+      font-size: 28px;
+      margin-top: 40px;
+      color: #ba005f;
+    }
+    .logo {
+      margin-top: 20px;
+      max-width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="intro">
+    <div class="title">לאיזה תפקיד לוהקת בקאסט?</div>
+    <button class="start-button" onclick="startGame()">מתחילים!</button>
+  </div>
+
+  <div class="container" id="game" style="display: none;">
+    <div class="question" id="question"></div>
+    <div id="options"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <div>
+    <img src="הזמנה לחתונה נופר ואלון (5 x 7 אינץ') (1).png" alt="לוגו" class="logo">
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "ים או בריכה?",
+        options: [
+          { text: "ים", score: "alon" },
+          { text: "בריכה", score: "nofar" }
+        ]
+      },
+      {
+        q: "לא תמצאו אותי בלי...",
+        options: [
+          { text: "קרם הגנה", score: "nofar" },
+          { text: "טישו", score: "alon" }
+        ]
+      },
+      {
+        q: "ארוחת שאריות:",
+        options: [
+          { text: "פתית וחומוס", score: "alon" },
+          { text: "טוסט שום שמיר", score: "nofar" }
+        ]
+      },
+      {
+        q: "מוזיקה מועדפת:",
+        options: [
+          { text: "שרית חדד / אד שירן", score: "nofar" },
+          { text: "HITS ב-100FM", score: "alon" }
+        ]
+      },
+      {
+        q: "לפני טיסה:",
+        options: [
+          { text: "אקסל ונקודות במפה", score: "alon" },
+          { text: "נזרום", score: "alon" }
+        ]
+      },
+      {
+        q: "שתייה מועדפת:",
+        options: [
+          { text: "בירה", score: "alon" },
+          { text: "ספרייט זירו", score: "nofar" }
+        ]
+      },
+      {
+        q: "חולשה:",
+        options: [
+          { text: "שוקולד", score: "nofar" },
+          { text: "גרעינים שחורים", score: "alon" }
+        ]
+      },
+      {
+        q: "סדרה אהובה:",
+        options: [
+          { text: "סיטקום", score: "alon" },
+          { text: "טראש", score: "nofar" }
+        ]
+      },
+      {
+        q: "שישי צהריים:",
+        options: [
+          { text: "בית קפה", score: "nofar" },
+          { text: "פיפא", score: "alon" }
+        ]
+      }
+    ];
+
+    let current = 0;
+    let scores = { nofar: 0, alon: 0 };
+
+    function startGame() {
+      document.getElementById("intro").style.display = "none";
+      document.getElementById("game").style.display = "block";
+      render();
+    }
+
+    function render() {
+      if (current >= questions.length) {
+        let result;
+        if (scores.nofar > scores.alon) {
+          result = "Mrs. Nofar Olami";
+        } else if (scores.alon > scores.nofar) {
+          result = "Mr. Alon Shalom";
+        } else {
+          result = "גם נופר וגם אלון 💕";
+        }
+        document.getElementById("game").innerHTML = `<div class="result">קיבלת את התפקיד של <strong>${result}</strong>! 🎬</div>`;
+        return;
+      }
+
+      const q = questions[current];
+      document.getElementById("question").innerText = q.q;
+      const opts = document.getElementById("options");
+      opts.innerHTML = "";
+      q.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.innerText = opt.text;
+        btn.className = "option";
+        btn.onclick = () => {
+          scores[opt.score]++;
+          current++;
+          render();
+        };
+        opts.appendChild(btn);
+      });
+    }
+  </script>
+
+</body>
+</html>
